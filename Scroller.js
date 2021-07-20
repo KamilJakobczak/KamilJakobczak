@@ -13,7 +13,7 @@ class Scroller {
     this.isThrottled = false;
     this.drawNav();
 
-    console.log(this.currentSectionIndex);
+    // console.log(this.currentSectionIndex);
   }
 
   isScrolledIntoView(item) {
