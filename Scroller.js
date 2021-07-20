@@ -11,6 +11,7 @@ class Scroller {
     this.currentSectionIndex = Math.max(currentSectionIndex, 0);
 
     this.isThrottled = false;
+    this.drawNav();
 
     console.log(this.currentSectionIndex);
   }
@@ -50,9 +51,44 @@ class Scroller {
     this.scrollToCurrentSection();
   };
   scrollToCurrentSection = () => {
+    this.selectedNavItem();
     this.sections[this.currentSectionIndex].scrollIntoView({
       behavior: 'smooth',
       block: 'start',
     });
+  };
+
+  drawNav = () => {
+    this.navigationContainer = document.createElement('aside');
+    this.navigationContainer.setAttribute('class', 'scroller__navigation');
+    const list = document.createElement('ul');
+
+    this.sections.forEach((section, index) => {
+      const listItem = document.createElement('li');
+      listItem.addEventListener('click', () => {
+        this.currentSectionIndex = index;
+        this.scrollToCurrentSection();
+      });
+
+      list.appendChild(listItem);
+    });
+    this.navigationContainer.appendChild(list);
+
+    document.body.appendChild(this.navigationContainer);
+    this.selectedNavItem();
+  };
+
+  selectedNavItem = () => {
+    if (this.navigationContainer) {
+      const navItems = this.navigationContainer.querySelectorAll('li');
+
+      navItems.forEach((item, index) => {
+        if (index === this.currentSectionIndex) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    }
   };
 }
